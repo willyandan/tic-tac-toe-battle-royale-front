@@ -2,21 +2,25 @@
   <div>
     <div class="jumbotron jumbotron-fluid header">
       <div class="container">
-        <div class="float-left div-logo">
-          <img src="https://via.placeholder.com/150">
-        </div>
         <h1 class="display-4">
           Tic Tac Toe<br>Battle Royale
         </h1>
         <p class="lead">Prove ser o melhor neste clássico jogo. Agora em versão battle royale =)</p>
+        <p v-if="players_online>0">Estamos com {{players_online}} {{players_online==1?'jogador':'jogadores'}} online</p>
       </div>
     </div>
     <div class="container">
       <div class="w-50 mx-auto">
-        <input type="text" class="form-control form-control-lg input-name" placeholder="Seu nick">
+        <input 
+          type="text" 
+          class="form-control form-control-lg input-name" 
+          placeholder="Seu nick" 
+          v-model="name"
+          @keyup.enter="connectToSocket()"
+        >
         <br>
         <p class="text-center">
-          <router-link :to="{name:'lobby'}" tag="button" class="my-super-cool-btn mx-auto">
+          <button @click="connectToSocket()" class="my-super-cool-btn mx-auto">
             <div class="dots-container">
               <div class="dot"></div>
               <div class="dot"></div>
@@ -24,7 +28,7 @@
               <div class="dot"></div>
             </div>
             <span>Vamos!</span>
-          </router-link>
+          </button>
         </p>
       </div>
     </div>
@@ -34,10 +38,34 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
+import { Socket } from 'vue-socket.io-extended';
 
-@Component
+@Component({})
 export default class Home extends Vue{
+    name:String=""
+    players_online:number=0
+    connectToSocket(){
+        if(!this.name){
+            this.$swal('Escolha um nome','','error')
+            return
+        }
+        this.$socket.client.emit('findMatch',this.name) 
+    }
+   
+    @Socket('findMatch')
+    findMatch(val: any){
+        this.$store.commit('setMatchKey', val.match_key)
+        this.$store.commit('setNumberOfPlayers', val.players)
+        this.$store.commit('setTotal', val.total )
+        this.$router.push({
+            name:'lobby'
+        })
+    }
 
+    @Socket('getOnlineUsers')
+    getOnlineUsers(val:number){
+        this.players_online=val
+    }
 }
 </script>
 <style>

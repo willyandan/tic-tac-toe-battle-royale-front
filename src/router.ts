@@ -4,6 +4,7 @@ import Home from './views/Home.vue';
 import Lobby from './views/Lobby.vue';
 import Match from './views/Match.vue';
 import Position from './views/Position.vue';
+import WaitingRoom from './views/WaitingRoom.vue';
 Vue.use(Router);
 
 export default new Router({
@@ -29,6 +30,11 @@ export default new Router({
       path: '/position',
       name: 'position',
       component: Position,
+    },
+    {
+      path: '/waiting-room',
+      name: 'waiting-room',
+      component: WaitingRoom,
     },
   ],
 });

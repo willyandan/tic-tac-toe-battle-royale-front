@@ -18,9 +18,11 @@
         Treine mais se quiser pegar posições melhores
       </h1>
       <p class="text-center">
-        <button class="btn btn-primary btn-lg">
+        <router-link 
+          :to="{name: 'home'}"
+          class="btn btn-primary btn-lg">
           Jogar novamente
-        </button>
+        </router-link>
       </p>
     </div>
   </div>
@@ -29,8 +31,14 @@
 import { Component, Vue } from "vue-property-decorator";
 @Component
 export default class Postion extends Vue{
-  position:number = 1;
-  total = 100
+
+  get total(){
+    return this.$store.state.total
+  }
+
+  get position(){
+    return this.$store.state.position
+  }
 }
 </script>
 

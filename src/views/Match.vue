@@ -13,7 +13,8 @@ import TicTacField  from "@/components/TicTacField.vue";
 @Component({
   components: {TicTacField}
 })
-export default class Home extends Vue {
+export default class Match extends Vue {
+
 }
 </script>
 

@@ -4,9 +4,6 @@
       <h1 class="loading text-center">Aguardando jogadores
         <span class="one">.</span><span class="two">.</span><span class="three">.</span>
       </h1>
-      <div class="display-1 text-center">
-        {{qtd}}/{{total}}
-      </div>
     </div>
   </div>
 </template>
@@ -16,22 +13,7 @@ import { Component, Vue } from "vue-property-decorator";
 import { Socket } from 'vue-socket.io-extended'; 
 @Component
 export default class Home extends Vue {
-  @Socket('countPlayers')
-  getOnlinePlayers(val: number){
-    this.$store.commit('setNumberOfPlayers',val)
-  }
   
-  get qtd() {
-    return this.$store.state.players
-  }
-
-  get total() {
-    return this.$store.state.total
-  }
-
-  startMatch(){
-    this.$router.push({name:'match'})
-  }
 }
 </script>
 
